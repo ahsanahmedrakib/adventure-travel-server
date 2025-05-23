@@ -9,7 +9,7 @@ const ObjectId = require("mongodb").ObjectId;
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xdeet.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@travel.jqpxez7.mongodb.net/travel?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -64,7 +64,6 @@ async function run() {
       res.send(allOrders);
     });
 
-
     // get api for a single order
 
     app.get("/orders/:id", async (req, res) => {
@@ -74,7 +73,6 @@ async function run() {
       res.send(result);
     });
 
-
     // update status pendig to approve
 
     app.put("/orders/:id", async (req, res) => {
@@ -83,13 +81,16 @@ async function run() {
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          status: "Approved"
+          status: "Approved",
         },
       };
-      const result = await ordersCollection.updateOne(filter, updateDoc, options)
+      const result = await ordersCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.json(result);
     });
-
 
     // delete a order
 
@@ -101,7 +102,6 @@ async function run() {
       console.log("Deleting user with id: ", result);
       res.json(result);
     });
-
   } finally {
     // await client.close();
   }
